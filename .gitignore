@@ -1,0 +1,8 @@
+.*
+!.gitignore
+
+/node_modules/
+
+create.sql
+
+/public/**
