@@ -2,5 +2,5 @@ POST http://localhost:3000/users/1/groups HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "grop2"
+    "name": "grop4"
 }

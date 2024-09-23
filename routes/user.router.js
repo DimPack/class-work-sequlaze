@@ -9,10 +9,11 @@ const {
 
 const { checkUser } = require("../middlewares/user.mw");
 const { pagination } = require("../middlewares/paginate.mw");
+const { singleUpload } = require("../middlewares/upload.mw");
 
 const userRouter = Router();
 
-userRouter.post("/", createUser);
+userRouter.post("/", singleUpload('avatar'), createUser);
 userRouter.get("/", pagination, findAllUsers);
 
 userRouter
@@ -20,6 +21,6 @@ userRouter
   .all(checkUser)
   .get(findUserByPk)
   .delete(deleteUserByPk)
-  .patch(updateUserByPk);
+  .patch(singleUpload('avatar'), updateUserByPk);
 
   module.exports = userRouter;

@@ -9,12 +9,16 @@ const attrs = [
   "password",
   "birthday",
   "isMale",
+  "avatar"
 ];
 
 module.exports.createUser = async (req, res, next) => {
   try {
-    const { body } = req;
+    const { body, file } = req;
     const values = _.pick(body, attrs);
+    if (file) {
+      values = { ...values, avatar: file.filename };
+    }
     const newUser = await User.create(values);
     if (!newUser) {
       return next(createError(400, "fix data"));
@@ -36,7 +40,7 @@ module.exports.findAllUsers = async (req, res, next) => {
       ...pagination,
     });
     if (!allUsers.length === 0) {
-      return next(createError(404, "list empty"));
+      return next(createError(400, "list empty"));
     }
     res.status(201).send({ data: allUsers });
   } catch (error) {
@@ -67,8 +71,11 @@ module.exports.deleteUserByPk = async (req, res, next) => {
 
 module.exports.updateUserByPk = async (req, res, next) => {
   try {
-    const { userInstance, body } = req;
-    const values = _.pick(body, attrs);
+    const { userInstance, body, file } = req;
+    let values = _.pick(body, attrs);
+    if (file) {
+      values = { ...values, avatar: file.filename };
+    }
     const updateUser = await userInstance.update(values);
     updateUser.dataValues.password = undefined;
     res.status(200).send({ data: updateUser });
@@ -76,7 +83,7 @@ module.exports.updateUserByPk = async (req, res, next) => {
     next(error);
   }
 };
-
+//---------------------------------------------------------------------------------
 module.exports.updateUserByPkStatic = async (req, res, next) => {
   try {
     const {
