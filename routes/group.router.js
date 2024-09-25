@@ -5,6 +5,7 @@ const {
   getGroup,
   addUserToGroup,
   updateGroup,
+  deleteUserFromGroup,
 } = require("../controllers/group-controller");
 const { checkGroup } = require("../middlewares/group.mw");
 const { singleUpload } = require("../middlewares/upload.mw");
@@ -19,5 +20,6 @@ groupRouter.get("/:groupId", getGroup);
 
 groupRouter.post("/:groupId", checkGroup, addUserToGroup);
 groupRouter.patch("/:groupId", checkGroup, singleUpload('image'), updateGroup); //image key in postman
+groupRouter.delete("/:groupId", checkGroup, deleteUserFromGroup);
 
 module.exports = groupRouter;
